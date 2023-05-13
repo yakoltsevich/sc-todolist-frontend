@@ -4,7 +4,6 @@ import List from '@mui/material/List';
 import Grid from '@mui/material/Grid';
 import {InteractiveListItem} from "./InteractiveListItem";
 
-
 export const InteractiveList = ({list, onClickSaveEdit, onClickDelete}) => {
     return (
         <Box sx={{flexGrow: 1}}>
