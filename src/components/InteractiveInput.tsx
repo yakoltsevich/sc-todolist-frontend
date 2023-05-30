@@ -5,10 +5,16 @@ import TextField from '@mui/material/TextField';
 import {useState} from "react";
 import AddIcon from '@mui/icons-material/Add';
 import RedoIcon from '@mui/icons-material/Redo';
+import DoneIcon from '@mui/icons-material/Done';
 
-
-export const InteractiveInput = ({incomingText = '', onClick, setEditMode}) => {
-    const [task, setTask] = useState(incomingText)
+type InteractiveInputProps = {
+    incomingText?: string,
+    onClick: (text: string) => void,
+    editMode?: boolean
+    setEditMode?: (arg: boolean) => void
+}
+export const InteractiveInput = ({incomingText, onClick, setEditMode}: InteractiveInputProps) => {
+    const [fieldValue, setFieldValue] = useState<string>(incomingText || '')
 
     return (
         <Paper
@@ -19,8 +25,8 @@ export const InteractiveInput = ({incomingText = '', onClick, setEditMode}) => {
                 sx={{width: '100%'}}
                 id="outlined-search"
                 label={`${setEditMode ? 'Edit' : 'Create'} task`}
-                value={task}
-                onChange={(event) => setTask(event.target.value)}
+                value={fieldValue}
+                onChange={(event) => setFieldValue(event.target.value)}
                 type="search"
             />
             {setEditMode && (
@@ -28,8 +34,9 @@ export const InteractiveInput = ({incomingText = '', onClick, setEditMode}) => {
                     color="primary"
                     sx={{p: '10px'}}
                     onClick={() => {
-                        setEditMode(false)
-                        setTask('')
+                        setEditMode
+                            ? setEditMode(false)
+                            : setFieldValue('')
                     }}
                     aria-label="close"
                 >
@@ -40,13 +47,13 @@ export const InteractiveInput = ({incomingText = '', onClick, setEditMode}) => {
                 color="primary"
                 sx={{p: '10px'}}
                 onClick={() => {
-                    if (!task.length) return
-                    onClick(task)
-                    setTask('')
+                    if (!fieldValue.length) return
+                    onClick(fieldValue)
+                    setFieldValue('')
                 }}
                 aria-label="Save"
             >
-                <AddIcon/>
+                {setEditMode ? <DoneIcon/> : <AddIcon/>}
             </IconButton>
         </Paper>
     );

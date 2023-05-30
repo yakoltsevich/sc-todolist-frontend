@@ -6,9 +6,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import {useState} from "react";
 import {InteractiveInput} from "./InteractiveInput";
+import {ITask} from "../models/ITask";
 
 
-export const InteractiveListItem = ({item, onClickSaveEdit, onClickDelete}) => {
+type InteractiveListItemProps = {
+    item: ITask,
+    onClickSaveEdit: ({id, text}: { id: string, text: string }) => void,
+    onClickDelete: (id: string) => void,
+}
+export const InteractiveListItem = ({item, onClickSaveEdit, onClickDelete}: InteractiveListItemProps) => {
     const [editMode, setEditMode] = useState(false)
 
     return (
@@ -16,10 +22,11 @@ export const InteractiveListItem = ({item, onClickSaveEdit, onClickDelete}) => {
             {editMode
                 ? (<InteractiveInput
                     incomingText={item.text}
-                    onClick={(payload) => {
+                    onClick={(payload: string) => {
                         onClickSaveEdit({id: item._id, text: payload})
                         setEditMode(false)
                     }}
+                    editMode={editMode}
                     setEditMode={setEditMode}
                 />)
                 : (<ListItem
@@ -46,9 +53,7 @@ export const InteractiveListItem = ({item, onClickSaveEdit, onClickDelete}) => {
                         </>
                     }
                 >
-                    <ListItemText
-                        primary={item.text}
-                    />
+                    <ListItemText primary={item.text}/>
                 </ListItem>)}
         </div>
     )
